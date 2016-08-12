@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  username: baukis
+  password:
+  host: ariel
+  encoding: utf8
+  reconnect: false
+  pool: 5
+
+development:
+  <<: *default
+  database: baukis_development
+
+test:
+  <<: *default
+  database: baukis_test
+
+production:
+  <<: *default
+  database: baukis_production
