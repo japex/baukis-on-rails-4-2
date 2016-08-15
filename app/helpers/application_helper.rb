@@ -8,4 +8,8 @@ module ApplicationHelper
       'Baukis'
     end
   end
+
+  def application_name
+    AppSetting.application_name || 'BAUKIS'
+  end
 end
