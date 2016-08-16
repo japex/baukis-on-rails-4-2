@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       resources :allowed_sources, only: [ :index, :create ] do
         delete :delete, on: :collection
       end
+      resource :app_setting, only: [ :edit, :update ]
     end
   end
 
