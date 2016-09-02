@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140101000020) do
+ActiveRecord::Schema.define(version: 20160902073207) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "customer_id",   limit: 4,                null: false
@@ -59,6 +59,13 @@ ActiveRecord::Schema.define(version: 20140101000020) do
 
   add_index "allowed_sources", ["namespace", "octet1", "octet2", "octet3", "octet4"], name: "index_allowed_sources_on_namespace_and_octets", unique: true, using: :btree
 
+  create_table "app_settings", force: :cascade do |t|
+    t.string   "application_name",       limit: 255
+    t.integer  "session_timeout_in_min", limit: 4
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string   "email",            limit: 255, null: false
     t.string   "email_for_index",  limit: 255, null: false
@@ -89,6 +96,14 @@ ActiveRecord::Schema.define(version: 20140101000020) do
   add_index "customers", ["family_name_kana", "given_name_kana"], name: "index_customers_on_family_name_kana_and_given_name_kana", using: :btree
   add_index "customers", ["gender", "family_name_kana", "given_name_kana"], name: "index_customers_on_gender_and_furigana", using: :btree
   add_index "customers", ["given_name_kana"], name: "index_customers_on_given_name_kana", using: :btree
+
+  create_table "emails", force: :cascade do |t|
+    t.integer  "customer_id",     limit: 4,   null: false
+    t.string   "email",           limit: 255, null: false
+    t.string   "email_for_index", limit: 255, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "entries", force: :cascade do |t|
     t.integer  "program_id",  limit: 4,                 null: false
