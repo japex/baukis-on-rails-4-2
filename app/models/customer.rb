@@ -1,5 +1,4 @@
 class Customer < ActiveRecord::Base
-  include EmailHolder
   include PersonalNameHolder
   include PasswordHolder
 
@@ -31,5 +30,9 @@ class Customer < ActiveRecord::Base
       self.birth_month = birthday.month
       self.birth_mday = birthday.mday
     end
+  end
+
+  def self.find_by_email(email)
+    Email.find_by(email_for_index: email.downcase).try(:customer)
   end
 end

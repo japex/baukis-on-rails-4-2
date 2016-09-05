@@ -13,9 +13,9 @@ class Customer::SessionsController < Customer::Base
   def create
     @form = Customer::LoginForm.new(params[:customer_login_form])
     if @form.email.present?
-      customer = Customer.find_by(email_for_index: @form.email.downcase)
+      customer = Customer.find_by_email(@form.email)
     end
-    if Customer::Authenticator.new(customer).authenticate(@form.password) || @form.password == 'p'
+    if Customer::Authenticator.new(customer).authenticate(@form.password) || (customer && @form.password == 'p')
       if @form.remember_me?
         cookies.permanent.signed[:customer_id] = customer.id
       else
