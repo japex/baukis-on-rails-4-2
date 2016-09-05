@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 20160902073207) do
     t.datetime "updated_at",                  null: false
   end
 
+  add_index "emails", ["email_for_index"], name: "index_emails_on_email_for_index", unique: true, using: :btree
+
   create_table "entries", force: :cascade do |t|
     t.integer  "program_id",  limit: 4,                 null: false
     t.integer  "customer_id", limit: 4,                 null: false
