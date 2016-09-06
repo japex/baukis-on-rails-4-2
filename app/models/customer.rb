@@ -17,6 +17,8 @@ class Customer < ActiveRecord::Base
   has_many :inbound_messages, class_name: 'StaffMessage',
     foreign_key: 'customer_id'
 
+  accepts_nested_attributes_for :emails
+
   validates :gender, inclusion: { in: %w(male female), allow_blank: true }
   validates :birthday, date: {
     after: Date.new(1900, 1, 1),
