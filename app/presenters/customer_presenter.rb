@@ -1,5 +1,17 @@
 class CustomerPresenter < ModelPresenter
-  delegate :email, to: :object
+
+  def email
+    if object.emails.size <= 1
+      object.emails.first.try(:email)
+    else
+      v = view_context
+      v.content_tag :ul, style: 'margin: 0px' do
+        object.emails.each do |email|
+          v.concat v.content_tag :li, email.email
+        end
+      end
+    end
+  end
 
   def full_name
     object.family_name + ' ' + object.given_name
