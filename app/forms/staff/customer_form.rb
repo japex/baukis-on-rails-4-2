@@ -27,7 +27,18 @@ class Staff::CustomerForm
     self.inputs_home_address = params[:inputs_home_address] == '1'
     self.inputs_work_address = params[:inputs_work_address] == '1'
 
-    customer.assign_attributes(customer_params)
+    customer.assign_attributes(customer_params.tap { |c_params|
+      c_params[:emails_attributes].delete_if do |key, value|
+        id    = value[:id]
+        email = value[:email]
+        if email.blank?
+          customer.emails.destroy(id) if id.present?
+          true
+        else
+          false
+        end
+      end
+    })
 
     phones = phone_params(:customer).fetch(:phones)
     customer.personal_phones.size.times do |index|
@@ -74,9 +85,10 @@ class Staff::CustomerForm
   private
   def customer_params
     @params.require(:customer).permit(
-      :email, :password,
+      :password,
       :family_name, :given_name, :family_name_kana, :given_name_kana,
-      :birthday, :gender
+      :birthday, :gender,
+      emails_attributes: [:id, :email],
     )
   end
 

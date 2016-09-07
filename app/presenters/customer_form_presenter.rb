@@ -22,16 +22,4 @@ class CustomerFormPresenter < UserFormPresenter
       m << label(:gender_female, '女性')
     end
   end
-
-  def emails_field_block(label_text, options = {})
-    v = view_context
-    markup(:div, class: 'input-block') do |m|
-      m << decorated_label(:emails, label_text, options)
-      m << v.content_tag(:ol, type: 1) do
-        form_builder.fields_for :emails do |e|
-          v.concat v.content_tag(:li, e.text_field(:email, options))
-        end
-      end
-    end
-  end
 end

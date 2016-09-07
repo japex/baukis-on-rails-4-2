@@ -1,7 +1,18 @@
 <%= f.fields_for :customer, f.object.customer do |ff| %>
   <%= markup do |m| 
     p = CustomerFormPresenter.new(ff, self)
-    m << p.emails_field_block('メールアドレス', size: 32)
+    m.div(class: 'input-block') do
+      m << p.decorated_label(:emails, 'メールアドレス')
+      m.ol do
+        #m << render('email_fields', f: ff)
+        ff.fields_for(:emails) do |e|
+          m.li do
+            m << e.hidden_field(:id)
+            m << e.text_field(:email)
+          end
+        end
+      end
+    end
     p.with_options(required: true) do |q|
       m << q.password_field_block(:password, 'パスワード', size: 32)
       m << q.full_name_block(:family_name, :given_name, '氏名')

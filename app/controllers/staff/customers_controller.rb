@@ -13,7 +13,11 @@ class Staff::CustomersController < Staff::Base
   end
 
   def edit
-    @customer_form = Staff::CustomerForm.new(Customer.find(params[:id]))
+    customer = Customer.find(params[:id])
+    @customer_form = Staff::CustomerForm.new(customer)
+    while customer.emails.size < 2 do
+      customer.emails.build
+    end
   end
 
   def create
