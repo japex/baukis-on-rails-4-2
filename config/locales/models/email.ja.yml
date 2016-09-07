@@ -1,0 +1,11 @@
+ja:
+  activerecord:
+    attributes:
+      email:
+        email: メールアドレス
+    errors:
+      models:
+        email:
+          attributes:
+            email:
+              taken: が重複しています。

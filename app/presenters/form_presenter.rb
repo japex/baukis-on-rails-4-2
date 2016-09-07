@@ -70,10 +70,10 @@ class FormPresenter
     end
   end
 
-  def error_messages_for(name)
+  def error_messages_for(name, wrapping_element=:div)
     markup do |m|
       object.errors.full_messages_for(name).each do |message|
-        m.div(class: 'error-message') do |m|
+        m.send(wrapping_element, class: 'error-message') do |m|
           m.text message
         end
       end

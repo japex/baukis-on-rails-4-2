@@ -4,12 +4,9 @@
     m.div(class: 'input-block') do
       m << p.decorated_label(:emails, 'メールアドレス')
       m.ol do
-        #m << render('email_fields', f: ff)
         ff.fields_for(:emails) do |e|
-          m.li do
-            m << e.hidden_field(:id)
-            m << e.text_field(:email)
-          end
+          pp = CustomerEmailsFormPresenter.new(e, self)
+          m << pp.emails_field_block
         end
       end
     end
