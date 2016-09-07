@@ -41,4 +41,9 @@ Rails.application.configure do
     customer: { host: 'namaka', path: 'mypage' },
     restrict_ip_addresses: false
   }
+
+  if ENV['TRUSTED_IP']
+    config.web_console.whitelisted_ips << ENV['TRUSTED_IP']
+    BetterErrors::Middleware.allow_ip!    ENV['TRUSTED_IP']
+  end
 end

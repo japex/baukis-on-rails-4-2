@@ -27,3 +27,19 @@ group :test do
   gem 'capybara', '~> 2.5.0'
   gem 'factory_girl_rails', '~> 4.5.0'
 end
+
+group :development do
+  gem 'web-console', '~> 2.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
+
+group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'awesome_print', require: 'ap'
+  gem 'hirb'
+  gem 'hirb-unicode'
+  gem 'pry-doc'
+  gem 'pry-stack_explorer'
+end
