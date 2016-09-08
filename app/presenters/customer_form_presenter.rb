@@ -22,4 +22,8 @@ class CustomerFormPresenter < UserFormPresenter
       m << label(:gender_female, '女性')
     end
   end
+
+  def customer_emails_form_presenter(form_builder_for_emails)
+    CustomerEmailsFormPresenter.new(form_builder_for_emails, view_context)
+  end
 end

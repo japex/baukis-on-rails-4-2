@@ -2,7 +2,7 @@
   m << p.decorated_label(:emails, 'メールアドレス')
   m.ol do
     f.fields_for(:emails) do |e|
-      pp = CustomerEmailsFormPresenter.new(e, view_context)
+      pp = p.customer_emails_form_presenter(e)
       m << pp.emails_field_block
     end
   end
