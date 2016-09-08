@@ -1,0 +1,9 @@
+<%= markup(:div, class: 'input-block') do |m|
+  m << p.decorated_label(:emails, 'メールアドレス')
+  m.ol do
+    f.fields_for(:emails) do |e|
+      pp = CustomerEmailsFormPresenter.new(e, view_context)
+      m << pp.emails_field_block
+    end
+  end
+end %>
