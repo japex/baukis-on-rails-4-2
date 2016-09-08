@@ -4,10 +4,9 @@ class CustomerPresenter < ModelPresenter
     if object.emails.size <= 1
       object.emails.first.try(:email)
     else
-      v = view_context
-      v.content_tag :ul, style: 'margin: 0px' do
+      markup(:ul, style: 'margin: 0px') do |m|
         object.emails.each do |email|
-          v.concat v.content_tag :li, email.email
+          m.li email.email
         end
       end
     end
