@@ -14,4 +14,8 @@ class ConfirmingCustomerFormPresenter < ConfirmingUserFormPresenter
       m << hidden_field(:gender)
     end
   end
+
+  def customer_emails_form_presenter(form_builder_for_emails)
+    ConfirmingCustomerEmailsFormPresenter.new(form_builder_for_emails, view_context)
+  end
 end

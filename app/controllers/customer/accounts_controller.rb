@@ -5,6 +5,9 @@ class Customer::AccountsController < Customer::Base
 
   def edit
     @customer_form = Customer::AccountForm.new(current_customer)
+    while current_customer.emails.size < 2 do
+      current_customer.emails.build
+    end
   end
 
   # PATCH

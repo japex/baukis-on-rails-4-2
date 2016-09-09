@@ -26,7 +26,19 @@ class Customer::AccountForm
     self.inputs_home_address = params[:inputs_home_address].in? [ '1', 'true' ]
     self.inputs_work_address = params[:inputs_work_address].in? [ '1', 'true' ]
 
-    customer.assign_attributes(customer_params)
+    customer.assign_attributes(customer_params.tap { |_customer_params|
+      _customer_params[:emails_attributes].delete_if { |key, value|
+        value[:id].blank? && value[:email].blank?
+      }  # because {id: "", email: ""} causes invalid creation of Email with blank email.
+    })
+
+    emails = customer_params[:emails_attributes]
+    customer.emails.size.times do |index|
+      attributes = emails[index.to_s]
+      if attributes && attributes[:email].blank?
+        customer.emails[index].mark_for_destruction
+      end
+    end
 
     phones = phone_params(:customer).fetch(:phones)
     customer.personal_phones.size.times do |index|
@@ -74,7 +86,8 @@ class Customer::AccountForm
   def customer_params
     @params.require(:customer).permit(
       :family_name, :given_name, :family_name_kana, :given_name_kana,
-      :birthday, :gender
+      :birthday, :gender,
+      emails_attributes: [:id, :email],
     )
   end
 
