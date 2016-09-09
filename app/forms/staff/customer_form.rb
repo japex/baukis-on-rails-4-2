@@ -27,18 +27,19 @@ class Staff::CustomerForm
     self.inputs_home_address = params[:inputs_home_address] == '1'
     self.inputs_work_address = params[:inputs_work_address] == '1'
 
-    customer.assign_attributes(customer_params.tap { |c_params|
-      c_params[:emails_attributes].delete_if do |key, value|
-        id    = value[:id]
-        email = value[:email]
-        if email.blank?
-          customer.emails.destroy(id) if id.present?
-          true
-        else
-          false
-        end
-      end
+    customer.assign_attributes(customer_params.tap { |_customer_params|
+      _customer_params[:emails_attributes].delete_if { |key, value|
+        value[:id].blank? && value[:email].blank?
+      }  # because {id: "", email: ""} causes invalid creation of Email with blank email.
     })
+
+    emails = customer_params[:emails_attributes]
+    customer.emails.size.times do |index|
+      attributes = emails[index.to_s]
+      if attributes && attributes[:email].blank?
+        customer.emails[index].mark_for_destruction
+      end
+    end
 
     phones = phone_params(:customer).fetch(:phones)
     customer.personal_phones.size.times do |index|
