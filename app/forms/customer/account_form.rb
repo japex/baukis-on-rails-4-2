@@ -1,5 +1,6 @@
 class Customer::AccountForm
   include ActiveModel::Model
+  include CustomerParamsHelper
 
   attr_accessor :customer, :inputs_home_address, :inputs_work_address
   delegate :persisted?, :valid?, :save, to: :customer
@@ -26,19 +27,9 @@ class Customer::AccountForm
     self.inputs_home_address = params[:inputs_home_address].in? [ '1', 'true' ]
     self.inputs_work_address = params[:inputs_work_address].in? [ '1', 'true' ]
 
-    customer.assign_attributes(customer_params.tap { |_customer_params|
-      _customer_params[:emails_attributes].delete_if { |key, value|
-        value[:id].blank? && value[:email].blank?
-      }  # because {id: "", email: ""} causes invalid creation of Email with blank email.
-    })
+    customer.assign_attributes(prune_emails(customer_params))
 
-    emails = customer_params[:emails_attributes]
-    customer.emails.size.times do |index|
-      attributes = emails[index.to_s]
-      if attributes && attributes[:email].blank?
-        customer.emails[index].mark_for_destruction
-      end
-    end
+    mark_emails_for_destruction(customer, customer_params)
 
     phones = phone_params(:customer).fetch(:phones)
     customer.personal_phones.size.times do |index|

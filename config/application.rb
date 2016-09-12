@@ -26,5 +26,6 @@ module Baukis
       g.controller_specs false
       g.view_specs false
     end
+    config.autoload_paths << Rails.root.join(File.join(%w(app forms concerns)))
   end
 end
