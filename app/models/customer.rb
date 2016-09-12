@@ -19,6 +19,7 @@ class Customer < ActiveRecord::Base
 
   accepts_nested_attributes_for :emails
 
+  validates :emails, length: { maximum: 2 }
   validates :gender, inclusion: { in: %w(male female), allow_blank: true }
   validates :birthday, date: {
     after: Date.new(1900, 1, 1),
